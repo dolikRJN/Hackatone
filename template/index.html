@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Печать героя — тренажёр слепой печати</title>
+  <link rel="stylesheet" href="./static/css/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="logo" href="index.html">Печать героя</a>
+    <nav class="nav" aria-label="Основное меню">
+      <a href="leaderboard.html">Лидеры</a>
+    </nav>
+    <a class="btn btn--ghost btn--sm" href="auth.html" data-only="guest">Войти</a>
+    <a class="btn btn--ghost btn--sm" href="profile.html" data-only="user">Профиль</a>
+    <a class="btn btn--sm" href="game.html" data-play>Играть</a>
+  </header>
+
+  <main>
+    <!-- Главный экран -->
+    <section class="lp-hero">
+      <h1>Научись печатать вслепую</h1>
+      <p>Тренажёр с уровнями, комбо и таблицей лидеров. Печатай, копи опыт и смотри, как растёт скорость.</p>
+      <div class="lp-cta">
+        <a class="btn" href="game.html" data-play>Начать печатать</a>
+        <a class="btn btn--ghost" href="leaderboard.html">Таблица лидеров</a>
+      </div>
+    </section>
+
+    <!-- Демо -->
+    <section class="lp-demo" aria-label="Пример тренировки">
+      <div class="typing" aria-hidden="true">
+        <span class="ch ok">б</span><span class="ch ok">ы</span><span class="ch ok">с</span><span class="ch ok">т</span><span class="ch ok">р</span><span class="ch ok">о</span><span class="ch ok"> </span><span class="ch ok">и</span><span class="ch ok"> </span><span class="ch bad">т</span><span class="ch cur">о</span><span class="ch">ч</span><span class="ch">н</span><span class="ch">о</span>
+      </div>
+    </section>
+
+    <!-- Преимущества -->
+    <section class="lp-features">
+      <div>
+        <span class="cap cap--sm">⌨️</span>
+        <h3>Четыре режима</h3>
+        <p>Слова, предложения, код и случайные символы на русском и английском.</p>
+      </div>
+      <div>
+        <span class="cap cap--sm">🖐️</span>
+        <h3>Подсказки по пальцам</h3>
+        <p>На клавиатуре подсвечивается следующая клавиша и палец, которым её нажимать.</p>
+      </div>
+      <div>
+        <span class="cap cap--sm">🏆</span>
+        <h3>Уровни и достижения</h3>
+        <p>Очки, комбо, бонусы и награды за рекорды. Прогресс сохраняется в аккаунте.</p>
+      </div>
+    </section>
+
+    <!-- Топ игроков -->
+    <section class="lp-top">
+      <div class="card">
+        <h2>Лучшие игроки</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>#</th><th>Игрок</th><th class="num">Слов/мин</th><th class="num">Точность</th></tr></thead>
+            <tbody>
+              <tr><td><span class="place place--1">1</span></td><td>Neo_Keys</td><td class="num">112</td><td class="num">99%</td></tr>
+              <tr><td><span class="place place--2">2</span></td><td>ТихийДом</td><td class="num">104</td><td class="num">98%</td></tr>
+              <tr><td><span class="place place--3">3</span></td><td>qwerty_ninja</td><td class="num">97</td><td class="num">97%</td></tr>
+              <tr><td><span class="place">4</span></td><td>Мария</td><td class="num">88</td><td class="num">99%</td></tr>
+              <tr><td><span class="place">5</span></td><td>Артём</td><td class="num">81</td><td class="num">96%</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p style="margin-top:1rem"><a href="leaderboard.html">Вся таблица лидеров</a></p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">Печать героя · Киберрывок, осень 2026</footer>
+  <script src="./static/js/auth.js"></script>
+</body>
+</html>
