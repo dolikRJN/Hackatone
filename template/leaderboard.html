@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Таблица лидеров — Печать героя</title>
+  <link rel="stylesheet" href="./static/css/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="logo" href="index.html">Печать героя</a>
+    <nav class="nav" aria-label="Основное меню">
+      <a href="game.html" data-play>Играть</a>
+      <a href="leaderboard.html" aria-current="page">Лидеры</a>
+      <a href="profile.html">Профиль</a>
+    </nav>
+    <a class="logout" href="auth.html" data-only="guest">Войти</a>
+    <a class="logout" href="index.html" data-logout data-only="user">Выйти</a>
+  </header>
+
+  <main class="page">
+    <h1>Таблица лидеров</h1>
+
+    <!-- Фильтры: data-metric / data-period переключает JS и запрашивает данные у бэкенда -->
+    <div class="toolbar">
+      <div class="seg" role="tablist" aria-label="Рейтинг по" id="metric">
+        <button role="tab" aria-selected="true" data-metric="speed">Скорость</button>
+        <button role="tab" aria-selected="false" data-metric="accuracy">Точность</button>
+        <button role="tab" aria-selected="false" data-metric="xp">Опыт</button>
+      </div>
+      <div class="seg" role="tablist" aria-label="Период" id="period">
+        <button role="tab" aria-selected="false" data-period="day">Сегодня</button>
+        <button role="tab" aria-selected="false" data-period="week">Неделя</button>
+        <button role="tab" aria-selected="true" data-period="all">Всё время</button>
+      </div>
+    </div>
+
+    <section class="card">
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>#</th><th>Игрок</th><th class="num">Слов/мин</th><th class="num">Симв/мин</th><th class="num">Точность</th><th class="num">Опыт</th></tr>
+          </thead>
+          <tbody id="leaders">
+            <tr><td><span class="place place--1">1</span></td><td>Neo_Keys</td><td class="num">112</td><td class="num">560</td><td class="num">99%</td><td class="num">18 400</td></tr>
+            <tr><td><span class="place place--2">2</span></td><td>ТихийДом</td><td class="num">104</td><td class="num">520</td><td class="num">98%</td><td class="num">16 950</td></tr>
+            <tr><td><span class="place place--3">3</span></td><td>qwerty_ninja</td><td class="num">97</td><td class="num">485</td><td class="num">97%</td><td class="num">15 120</td></tr>
+            <tr><td><span class="place">4</span></td><td>Мария</td><td class="num">88</td><td class="num">440</td><td class="num">99%</td><td class="num">12 600</td></tr>
+            <tr><td><span class="place">5</span></td><td>Артём</td><td class="num">81</td><td class="num">405</td><td class="num">96%</td><td class="num">9 870</td></tr>
+            <tr><td><span class="place">6</span></td><td>keyboard_cat</td><td class="num">70</td><td class="num">350</td><td class="num">94%</td><td class="num">4 310</td></tr>
+            <!-- Строку текущего игрока JS помечает классом is-me -->
+            <tr class="is-me"><td><span class="place">7</span></td><td><span data-nickname>Игрок</span> (ты)</td><td class="num">64</td><td class="num">320</td><td class="num">97%</td><td class="num">1 240</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script src="./static/js/auth.js"></script>
+</body>
+</html>
