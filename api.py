@@ -1,6 +1,5 @@
 from fastapi import FastAPI, Header, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
-from datetime import datetime
 import uuid, json, sqlite3, hashlib
 
 import services
