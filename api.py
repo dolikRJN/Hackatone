@@ -15,7 +15,7 @@ app.add_middleware(
 )
 
 DB_PATH = "SQLiteDB.db"
-TOKENS = {"test", 1}
+TOKENS = {"test": 1}
 
 def get_conn():
     conn = sqlite3.connect(DB_PATH)
@@ -24,7 +24,7 @@ def get_conn():
     return conn
 
 def hash_pwd(password):
-    return hashlib.sha256(password.sncode("utf-8")).hexdigest()
+    return hashlib.sha256(password.encode("utf-8")).hexdigest()
 
 def get_user_id(auth: str = Header(default=None)):
     if not auth:
@@ -39,7 +39,7 @@ def register(data: RegisterRequest):
     cur = conn.cursor()
     try:
         cur.execute(
-            "INSERT INTO Users (email, password, xp, level_id) VALUES (?, ?, 0, 1)"
+            "INSERT INTO Users (email, password, xp, level_id) VALUES (?, ?, 0, 1)", (data.email, hash_pwd(data.password))
         )
         user_id = cur.lastrowid
         conn.commit()
@@ -57,7 +57,7 @@ def login(data: LoginRequest):
     cur.execute(
         "SELECT id FROM Users WHERE email = ? AND password = ?", (data.email, hash_pwd(data.password))
     )
-    row = cur.fetchone
+    row = cur.fetchone()
     conn.close()
 
     if not row:
@@ -73,7 +73,7 @@ def get_me(auth: str = Header(default=None)):
     conn = get_conn()
     cur = conn.cursor()
     cur.execute("SELECT id, email, xp, level_id FROM Users WHERE id = ?", (user_id,))
-    user = cur.fetchone
+    user = cur.fetchone()
     conn.close()
 
     if not user:
@@ -94,7 +94,7 @@ def save_result(data: SessionResult, auth: str = Header(default=None)):
     cur = conn.cursor()
 
     cur.execute("SELECT xp, level_id FROM Users WHERE id = ?", (user_id,))
-    user = cur.fetchone
+    user = cur.fetchone()
     if not user:
         conn.close()
         raise HTTPException(status_code=404, detail="Пользователь не найден")
@@ -114,7 +114,11 @@ def save_result(data: SessionResult, auth: str = Header(default=None)):
     cur.execute("UPDATE Users SET xp = ?, level_id = ? WHERE id = ?", (new_xp, new_level, user_id))
 
     cur.execute("SELECT total_lessons_completed FROM Statistics WHERE user_id = ?", (user_id,))
-    total_lessons = cur.fetchone()["total_lessons_completed"]
+    stats_row = cur.fetchone()
+    if stats_row is None:
+        total_lessons = 0
+    else:
+        total_lessons = stats_row["total_lessons_completed"]
 
     candidate_achieves = services.check_achieves(wpm, acc, total_lessons)
     new_achievements = []
