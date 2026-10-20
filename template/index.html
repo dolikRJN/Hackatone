@@ -1,56 +1,70 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="ru" prefix="og: https://ogp.me/ns#">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Печать героя — тренажёр слепой печати</title>
-  <link rel="stylesheet" href="./static/css/style.css">
+  <title>Тренажёр слепой печати онлайн — Печать героя</title>
+  <meta name="description" content="Учитесь печатать вслепую на русском и английском. Тренируйте скорость и точность, используйте подсказки по пальцам и отслеживайте прогресс в «Печати героя».">
+  <meta name="theme-color" content="#15123a">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="ru_RU">
+  <meta property="og:site_name" content="Печать героя">
+  <meta property="og:title" content="Тренажёр слепой печати онлайн — Печать героя">
+  <meta property="og:description" content="Практикуйте печать на русском и английском: четыре режима, подсказки по пальцам, комбо и статистика прогресса.">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Печать героя — тренажёр слепой печати">
+  <meta name="twitter:description" content="Тренируйте скорость и точность печати на русском и английском. Следите за прогрессом и открывайте достижения.">
+  <!-- SEO_META -->
+  <link rel="icon" href="/static/img/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
   <header class="topbar">
-    <a class="logo" href="index.html">Печать героя</a>
+    <a class="logo" href="/">Печать героя</a>
     <nav class="nav" aria-label="Основное меню">
-      <a href="leaderboard.html">Лидеры</a>
+      <a href="/leaderboard">Лидеры</a>
     </nav>
-    <a class="btn btn--ghost btn--sm" href="auth.html" data-only="guest">Войти</a>
-    <a class="btn btn--ghost btn--sm" href="profile.html" data-only="user">Профиль</a>
-    <a class="btn btn--sm" href="game.html" data-play>Играть</a>
+    <a class="btn btn--ghost btn--sm" href="/auth" data-only="guest">Войти</a>
+    <a class="btn btn--sm" href="/game" data-play>Играть</a>
+    <div class="account" data-account data-only="user" hidden></div>
   </header>
 
   <main>
     <!-- Главный экран -->
     <section class="lp-hero">
-      <h1>Научись печатать вслепую</h1>
+      <h1>Научись печатать вслепую онлайн</h1>
       <p>Тренажёр с уровнями, комбо и таблицей лидеров. Печатай, копи опыт и смотри, как растёт скорость.</p>
       <div class="lp-cta">
-        <a class="btn" href="game.html" data-play>Начать печатать</a>
-        <a class="btn btn--ghost" href="leaderboard.html">Таблица лидеров</a>
+        <a class="btn" href="/game" data-play>Начать печатать</a>
+        <a class="btn btn--ghost" href="/leaderboard">Таблица лидеров</a>
       </div>
     </section>
 
     <!-- Демо -->
     <section class="lp-demo" aria-label="Пример тренировки">
       <div class="typing" aria-hidden="true">
-        <span class="ch ok">б</span><span class="ch ok">ы</span><span class="ch ok">с</span><span class="ch ok">т</span><span class="ch ok">р</span><span class="ch ok">о</span><span class="ch ok"> </span><span class="ch ok">и</span><span class="ch ok"> </span><span class="ch bad">т</span><span class="ch cur">о</span><span class="ch">ч</span><span class="ch">н</span><span class="ch">о</span>
+        <span class="demo-line" data-typing-demo>быстро и точно</span>
       </div>
     </section>
 
     <!-- Преимущества -->
-    <section class="lp-features">
+    <section class="lp-features" aria-label="Возможности тренажёра слепой печати">
       <div>
         <span class="cap cap--sm">⌨️</span>
-        <h3>Четыре режима</h3>
+        <h2>Четыре режима</h2>
         <p>Слова, предложения, код и случайные символы на русском и английском.</p>
       </div>
       <div>
         <span class="cap cap--sm">🖐️</span>
-        <h3>Подсказки по пальцам</h3>
+        <h2>Подсказки по пальцам</h2>
         <p>На клавиатуре подсвечивается следующая клавиша и палец, которым её нажимать.</p>
       </div>
       <div>
         <span class="cap cap--sm">🏆</span>
-        <h3>Уровни и достижения</h3>
-        <p>Очки, комбо, бонусы и награды за рекорды. Прогресс сохраняется в аккаунте.</p>
+        <h2>Уровни и достижения</h2>
+        <p>Очки, комбо и награды за скорость и точность. Прогресс сохраняется в аккаунте.</p>
       </div>
     </section>
 
@@ -60,22 +74,19 @@
         <h2>Лучшие игроки</h2>
         <div class="table-wrap">
           <table>
-            <thead><tr><th>#</th><th>Игрок</th><th class="num">Слов/мин</th><th class="num">Точность</th></tr></thead>
-            <tbody>
-              <tr><td><span class="place place--1">1</span></td><td>Neo_Keys</td><td class="num">112</td><td class="num">99%</td></tr>
-              <tr><td><span class="place place--2">2</span></td><td>ТихийДом</td><td class="num">104</td><td class="num">98%</td></tr>
-              <tr><td><span class="place place--3">3</span></td><td>qwerty_ninja</td><td class="num">97</td><td class="num">97%</td></tr>
-              <tr><td><span class="place">4</span></td><td>Мария</td><td class="num">88</td><td class="num">99%</td></tr>
-              <tr><td><span class="place">5</span></td><td>Артём</td><td class="num">81</td><td class="num">96%</td></tr>
-            </tbody>
+            <thead><tr><th scope="col" data-field="rank">#</th><th scope="col" data-field="username">Игрок</th><th data-field="wpm" scope="col" class="num">Слов/мин</th><th data-field="accuracy" scope="col" class="num">Точность</th></tr></thead>
+            <tbody id="home-leaders"></tbody>
           </table>
         </div>
-        <p style="margin-top:1rem"><a href="leaderboard.html">Вся таблица лидеров</a></p>
+        <p id="leaders-status" role="status">Загрузка рейтинга…</p>
+        <p style="margin-top:1rem"><a href="/leaderboard">Вся таблица лидеров</a></p>
       </div>
     </section>
   </main>
 
   <footer class="footer">Печать героя · Киберрывок, осень 2026</footer>
-  <script src="./static/js/auth.js"></script>
+  <script src="/static/js/auth.js" defer></script>
+  <script src="/static/js/leaderboard.js" defer></script>
+  <script src="/static/js/demo.js" defer></script>
 </body>
 </html>

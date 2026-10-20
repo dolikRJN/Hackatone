@@ -115,6 +115,12 @@ h2 { font-size: 1.15rem; margin-bottom: 1rem; }
 .nav a[aria-current="page"] { background: var(--key); color: var(--text); box-shadow: 0 3px 0 var(--edge); }
 .user-chip { display: flex; align-items: center; gap: .6rem; color: var(--text); text-decoration: none; font-weight: 500; }
 .user-chip small { display: block; color: var(--muted); font-weight: 400; line-height: 1.1; }
+.account { display: flex; align-items: center; gap: 1.25rem; max-width: 100%; }
+.user-chip { min-width: 0; }
+.user-chip__info { min-width: 0; }
+.user-chip__name { display: block; max-width: 16ch; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.user-chip small { margin-top: .2rem; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.account .logout { flex-shrink: 0; }
 .logout { color: var(--muted); font-size: .92rem; }
 
 /* ===== Каркас страницы ===== */
@@ -156,6 +162,10 @@ h2 { font-size: 1.15rem; margin-bottom: 1rem; }
 table { width: 100%; border-collapse: collapse; min-width: 520px; }
 th, td { text-align: left; padding: .7rem .6rem; border-bottom: 1px solid var(--key); }
 th { color: var(--muted); font-weight: 500; font-size: .9rem; }
+/* Числа стоят строго под своими заголовками, длинный ник не растягивает таблицу. */
+th[data-field="rank"] { width: 3.5rem; }
+td[data-field="username"] { max-width: 15rem; overflow-wrap: anywhere; }
+td.num, th.num { white-space: nowrap; }
 
 /* ===== Игра ===== */
 .toolbar { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: space-between; align-items: center; }
@@ -173,6 +183,7 @@ th { color: var(--muted); font-weight: 500; font-size: .9rem; }
 .hud .stat b { font-size: 1.5rem; }
 .combo { display: grid; place-items: center; min-width: 96px; padding: .8rem 1.2rem; border-radius: 14px; background: var(--key); box-shadow: 0 5px 0 var(--edge); color: var(--gold); font: 700 1.8rem var(--font-head); }
 .combo small { display: block; color: var(--muted); font: 500 .75rem var(--font-body); text-align: center; }
+.combo.is-hot { color: var(--ok); background: #21464d; }
 .combo.is-pop { animation: pop .25s ease-out; }
 @keyframes pop { 50% { transform: scale(1.18); } }
 
@@ -189,6 +200,14 @@ th { color: var(--muted); font-weight: 500; font-size: .9rem; }
 .ch.bad { color: #fff; background: var(--err); border-radius: 4px; }
 .ch.cur { color: var(--text); background: rgba(255, 200, 87, .22); box-shadow: 0 2px 0 var(--gold); }
 .typing.is-shake { animation: shake .2s; }
+.typing.is-complete { border-color: var(--ok); }
+.typing.is-paused { opacity: .6; }
+/* Анимации запускаются только от ввода; полоса движется через transform. */
+.session-feedback { display: flex; flex-wrap: wrap; align-items: center; gap: .4rem 1rem; min-height: 1.5rem; color: var(--muted); font-size: .85rem; }
+#game-feedback { flex: 1; color: var(--gold); font-weight: 600; }
+#session-count { margin-left: auto; font-variant-numeric: tabular-nums; }
+.session-progress { height: 4px; margin-top: -1rem; overflow: hidden; border-radius: 4px; background: var(--key); }
+#session-fill { height: 100%; background: var(--ok); transform: scaleX(0); transform-origin: left; transition: transform .16s ease-out; }
 @keyframes shake { 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
 
 .hint { display: flex; align-items: center; gap: .8rem; color: var(--muted); }
@@ -261,9 +280,18 @@ th { color: var(--muted); font-weight: 500; font-size: .9rem; }
 .lp-hero p { color: var(--muted); font-size: 1.15rem; max-width: 46ch; }
 .lp-cta { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; }
 .lp-demo { max-width: 860px; margin: 0 auto; padding: 1rem 1.25rem; }
+.lp-demo .typing { display: grid; place-items: center; text-align: center; cursor: default; }
+/* Место под всю фразу сохраняется: при наборе блок не меняет размер и положение. */
+.demo-line { display: inline-block; white-space: pre; color: var(--ok); }
+.demo-line .ch { position: relative; }
+.demo-line .demo-pending { visibility: hidden; }
+.demo-line .demo-caret { color: transparent; background: transparent; box-shadow: none; }
+.demo-caret::before { content: ""; position: absolute; left: 0; top: .1em; width: 2px; height: 1.2em; background: var(--gold); animation: demo-blink .9s step-end infinite; }
+.demo-line.is-demo-paused .demo-caret::before { animation-play-state: paused; }
+@keyframes demo-blink { 50% { opacity: 0; } }
 .lp-features { max-width: 1000px; margin: 0 auto; padding: 3rem 1.25rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 2rem; }
 .lp-features > div { display: grid; gap: .6rem; align-content: start; }
-.lp-features h3 { font-size: 1.05rem; }
+.lp-features h2 { font-size: 1.05rem; margin-bottom: 0; }
 .lp-features p { color: var(--muted); }
 .lp-top { max-width: 760px; margin: 0 auto; padding: 1rem 1.25rem 3rem; }
 .footer { padding: 2rem 1rem; text-align: center; color: var(--muted); font-size: .9rem; border-top: 2px solid var(--edge); }

@@ -9,5 +9,5 @@ INSERT OR IGNORE INTO Achievements (id, title, description, unlock_condition_jso
 (1, 'Первый шаг', 'Завершите вашу самую первую тренировку', '{"metric": "total_lessons", "operator": ">=", "value": 1}'),
 (2, 'Снайпер', 'Пройдите упражнение со 100% точностью', '{"metric": "accuracy_pct", "operator": "==", "value": 100}'),
 (3, 'Печатный гений', 'Разгонитесь выше 300 WPM (слов в минуту)', '{"metric": "speed_wpm", "operator": ">=", "value": 300}'),
-(3, 'Стальной палец', 'Ни разу не промахнитесь за 1000 нажатий подряд', '{"metric": "accuracy_pct", "operator": ">=", "value": 1000}'),
+(5, 'Стальной палец', 'Ни разу не промахнитесь за 1000 нажатий подряд', '{"metric": "max_combo", "operator": ">=", "value": 1000}'),
 (4, 'Ветеран кода', 'Успешно завершите 50 тренировок в режиме "Code"', '{"metric": "code_lessons", "operator": ">=", "value": 50}');

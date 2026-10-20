@@ -1,25 +1,41 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="ru" prefix="og: https://ogp.me/ns#">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Таблица лидеров — Печать героя</title>
-  <link rel="stylesheet" href="./static/css/style.css">
+  <title>Рейтинг скорости печати — таблица лидеров «Печати героя»</title>
+  <meta name="description" content="Рейтинг игроков тренажёра «Печать героя»: скорость печати, точность и заработанный опыт. Сравнивайте результаты за день, неделю и всё время.">
+  <meta name="theme-color" content="#15123a">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="ru_RU">
+  <meta property="og:site_name" content="Печать героя">
+  <meta property="og:title" content="Рейтинг скорости печати — Печать героя">
+  <meta property="og:description" content="Таблица лидеров по скорости и точности печати. Сравнивайте результаты тренировок за день, неделю и всё время.">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Таблица лидеров — Печать героя">
+  <meta name="twitter:description" content="Сравнивайте скорость, точность и опыт игроков тренажёра слепой печати.">
+  <!-- SEO_META -->
+  <link rel="icon" href="/static/img/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
   <header class="topbar">
-    <a class="logo" href="index.html">Печать героя</a>
+    <a class="logo" href="/">Печать героя</a>
     <nav class="nav" aria-label="Основное меню">
-      <a href="game.html" data-play>Играть</a>
-      <a href="leaderboard.html" aria-current="page">Лидеры</a>
-      <a href="profile.html">Профиль</a>
+      <a href="/game" data-play>Играть</a>
+      <a href="/leaderboard" aria-current="page">Лидеры</a>
+      <a href="/profile">Профиль</a>
     </nav>
-    <a class="logout" href="auth.html" data-only="guest">Войти</a>
-    <a class="logout" href="index.html" data-logout data-only="user">Выйти</a>
+    <a class="logout" href="/auth" data-only="guest">Войти</a>
+    <div class="account" data-account data-only="user" hidden></div>
   </header>
 
   <main class="page">
     <h1>Таблица лидеров</h1>
+    <p>Сравнивайте скорость печати, точность и опыт игроков. Выберите показатель и период, чтобы увидеть результаты тренировок.</p>
+    <p id="leaders-status" role="status">Загрузка рейтинга…</p>
 
     <!-- Фильтры: data-metric / data-period переключает JS и запрашивает данные у бэкенда -->
     <div class="toolbar">
@@ -39,23 +55,15 @@
       <div class="table-wrap">
         <table>
           <thead>
-            <tr><th>#</th><th>Игрок</th><th class="num">Слов/мин</th><th class="num">Симв/мин</th><th class="num">Точность</th><th class="num">Опыт</th></tr>
+            <tr><th scope="col" data-field="rank">#</th><th scope="col" data-field="username">Игрок</th><th scope="col" data-field="wpm" class="num">Слов/мин</th><th scope="col" data-field="cpm" class="num">Симв/мин</th><th scope="col" data-field="accuracy" class="num">Точность</th><th scope="col" data-field="xp" class="num">Опыт</th></tr>
           </thead>
-          <tbody id="leaders">
-            <tr><td><span class="place place--1">1</span></td><td>Neo_Keys</td><td class="num">112</td><td class="num">560</td><td class="num">99%</td><td class="num">18 400</td></tr>
-            <tr><td><span class="place place--2">2</span></td><td>ТихийДом</td><td class="num">104</td><td class="num">520</td><td class="num">98%</td><td class="num">16 950</td></tr>
-            <tr><td><span class="place place--3">3</span></td><td>qwerty_ninja</td><td class="num">97</td><td class="num">485</td><td class="num">97%</td><td class="num">15 120</td></tr>
-            <tr><td><span class="place">4</span></td><td>Мария</td><td class="num">88</td><td class="num">440</td><td class="num">99%</td><td class="num">12 600</td></tr>
-            <tr><td><span class="place">5</span></td><td>Артём</td><td class="num">81</td><td class="num">405</td><td class="num">96%</td><td class="num">9 870</td></tr>
-            <tr><td><span class="place">6</span></td><td>keyboard_cat</td><td class="num">70</td><td class="num">350</td><td class="num">94%</td><td class="num">4 310</td></tr>
-            <!-- Строку текущего игрока JS помечает классом is-me -->
-            <tr class="is-me"><td><span class="place">7</span></td><td><span data-nickname>Игрок</span> (ты)</td><td class="num">64</td><td class="num">320</td><td class="num">97%</td><td class="num">1 240</td></tr>
-          </tbody>
+          <tbody id="leaders"></tbody>
         </table>
       </div>
     </section>
   </main>
 
-  <script src="./static/js/auth.js"></script>
+  <script src="/static/js/auth.js" defer></script>
+  <script src="/static/js/leaderboard.js" defer></script>
 </body>
 </html>

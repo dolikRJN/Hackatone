@@ -4,40 +4,44 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Профиль — Печать героя</title>
-  <link rel="stylesheet" href="./static/css/style.css">
+  <meta name="robots" content="noindex, follow">
+  <meta name="theme-color" content="#15123a">
+  <link rel="icon" href="/static/img/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body data-auth="required">
   <header class="topbar">
-    <a class="logo" href="index.html">Печать героя</a>
+    <a class="logo" href="/">Печать героя</a>
     <nav class="nav" aria-label="Основное меню">
-      <a href="game.html">Играть</a>
-      <a href="leaderboard.html">Лидеры</a>
-      <a href="profile.html" aria-current="page">Профиль</a>
+      <a href="/game">Играть</a>
+      <a href="/leaderboard">Лидеры</a>
+      <a href="/profile" aria-current="page">Профиль</a>
     </nav>
-    <a class="logout" href="index.html" data-logout>Выйти</a>
+    <div class="account" data-account data-only="user" hidden></div>
   </header>
 
   <main class="page">
+    <p id="profile-status" role="status">Загрузка профиля…</p>
     <!-- Шапка профиля -->
     <section class="card hero">
-      <img class="avatar avatar--lg" id="avatar" src="avatar.svg" alt="Аватар игрока">
+      <img class="avatar avatar--lg" id="avatar" src="/static/img/avatar.svg" alt="Аватар игрока">
       <div class="hero__info">
         <h1 id="nickname" data-nickname>Игрок</h1>
-        <span class="hero__lvl">Уровень <span id="level">7</span></span>
+        <span class="hero__lvl">Уровень <span id="level" data-level>1</span></span>
         <div>
-          <div class="xp-label"><span>Опыт</span><span><span id="xp-now">1 240</span> / <span id="xp-next">1 500</span></span></div>
-          <div class="xp" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="83"><div class="xp__fill" id="xp-fill" style="--p:83%"></div></div>
+          <div class="xp-label"><span>Опыт</span><span><span id="xp-now" data-xp>0</span> / <span id="xp-next" data-xp-next>200</span></span></div>
+          <div class="xp" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="xp__fill" id="xp-fill" style="--p:0%"></div></div>
         </div>
       </div>
-      <a class="btn" href="game.html">Играть</a>
+      <a class="btn" href="/game">Играть</a>
     </section>
 
     <!-- Общая статистика -->
     <section class="stats" aria-label="Общая статистика">
-      <div class="stat"><b id="best-wpm">64</b><span>Лучшая скорость, слов/мин</span></div>
-      <div class="stat"><b id="best-acc">97%</b><span>Лучшая точность</span></div>
-      <div class="stat"><b id="sessions">42</b><span>Тренировок</span></div>
-      <div class="stat"><b id="total-time">5 ч 12 м</b><span>Время за клавиатурой</span></div>
+      <div class="stat"><b id="best-wpm">0</b><span>Лучшая скорость, слов/мин</span></div>
+      <div class="stat"><b id="best-acc">0%</b><span>Лучшая точность</span></div>
+      <div class="stat"><b id="sessions">0</b><span>Тренировок</span></div>
+      <div class="stat"><b id="total-time">0 ч 0 м</b><span>Время за клавиатурой</span></div>
     </section>
 
     <div class="cols">
@@ -45,7 +49,7 @@
       <section class="card">
         <h2>Динамика скорости и точности</h2>
         <div class="chart-box">
-          <!-- Подключить Chart.js и нарисовать в #progressChart -->
+          <!-- График рисует profile.js без внешних библиотек. -->
           <canvas id="progressChart" aria-label="График скорости и точности по дням" role="img"></canvas>
         </div>
       </section>
@@ -53,27 +57,15 @@
       <!-- Проблемные символы -->
       <section class="card">
         <h2>Трудные символы</h2>
-        <ul class="chips" id="hard-keys">
-          <li class="chip"><b>ъ</b><span>18%</span></li>
-          <li class="chip"><b>щ</b><span>14%</span></li>
-          <li class="chip"><b>{</b><span>12%</span></li>
-          <li class="chip"><b>ж</b><span>9%</span></li>
-          <li class="chip"><b>;</b><span>8%</span></li>
-          <li class="chip"><b>э</b><span>6%</span></li>
-        </ul>
-        <p class="field__hint" style="margin-top:1rem">Доля ошибок на каждый символ.</p>
+        <ul class="chips" id="hard-keys"></ul>
+        <p class="field__hint" style="margin-top:1rem">Символы, в которых вы чаще всего ошибаетесь.</p>
       </section>
     </div>
 
     <!-- Достижения -->
     <section class="card">
       <h2>Достижения</h2>
-      <div class="ach-grid">
-        <div class="ach"><span class="ach__icon">⌨️</span><div><strong>Первые шаги</strong><small>Заверши первую тренировку</small></div></div>
-        <div class="ach"><span class="ach__icon">🔥</span><div><strong>Без ошибок</strong><small>1000 символов без ошибок</small></div></div>
-        <div class="ach is-locked"><span class="ach__icon">🏆</span><div><strong>Печатный гений</strong><small>Скорость 300 слов/мин</small></div></div>
-        <div class="ach is-locked"><span class="ach__icon">🦾</span><div><strong>Стальной палец</strong><small>1000 правильных нажатий подряд</small></div></div>
-      </div>
+      <div class="ach-grid"></div>
     </section>
 
     <!-- История -->
@@ -84,16 +76,12 @@
           <thead>
             <tr><th>Дата</th><th>Режим</th><th>Слов/мин</th><th>Точность</th><th>Ошибки</th><th>Опыт</th></tr>
           </thead>
-          <tbody id="history">
-            <tr><td>19.10.2026</td><td>Код</td><td>52</td><td>95%</td><td>11</td><td>+180</td></tr>
-            <tr><td>19.10.2026</td><td>Предложения</td><td>61</td><td>98%</td><td>4</td><td>+240</td></tr>
-            <tr><td>18.10.2026</td><td>Слова</td><td>64</td><td>97%</td><td>5</td><td>+260</td></tr>
-            <tr><td>17.10.2026</td><td>Символы</td><td>38</td><td>90%</td><td>19</td><td>+120</td></tr>
-          </tbody>
+          <tbody id="history"></tbody>
         </table>
       </div>
     </section>
   </main>
-  <script src="./static/js/auth.js"></script>
+  <script src="/static/js/auth.js"></script>
+  <script src="/static/js/profile.js"></script>
 </body>
 </html>

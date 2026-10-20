@@ -4,21 +4,20 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Игра — Печать героя</title>
-  <link rel="stylesheet" href="./static/css/style.css">
+  <meta name="robots" content="noindex, follow">
+  <meta name="theme-color" content="#15123a">
+  <link rel="icon" href="/static/img/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body data-auth="required">
   <header class="topbar">
-    <a class="logo" href="index.html">Печать героя</a>
+    <a class="logo" href="/">Печать героя</a>
     <nav class="nav" aria-label="Основное меню">
-      <a href="game.html" aria-current="page">Играть</a>
-      <a href="leaderboard.html">Лидеры</a>
-      <a href="profile.html">Профиль</a>
+      <a href="/game" aria-current="page">Играть</a>
+      <a href="/leaderboard">Лидеры</a>
+      <a href="/profile">Профиль</a>
     </nav>
-    <a class="user-chip" href="profile.html">
-      <img class="avatar avatar--sm" src="avatar.svg" alt="">
-      <span><span data-nickname>Игрок</span><small>Уровень 7</small></span>
-    </a>
-    <a class="logout" href="index.html" data-logout>Выйти</a>
+    <div class="account" data-account data-only="user" hidden></div>
   </header>
 
   <main class="page">
@@ -38,8 +37,8 @@
 
     <!-- Опыт -->
     <div>
-      <div class="xp-label"><span>Уровень 7</span><span>1 240 / 1 500 XP</span></div>
-      <div class="xp" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="83"><div class="xp__fill" id="xp-fill" style="--p:83%"></div></div>
+      <div class="xp-label"><span>Уровень <span data-level>1</span></span><span><span data-xp>0</span> / <span data-xp-next>200</span> XP</span></div>
+      <div class="xp" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="xp__fill" id="xp-fill" style="--p:0%"></div></div>
     </div>
 
     <!-- Статистика сессии -->
@@ -52,10 +51,18 @@
       <div class="combo" id="combo"><span>x1</span><small>комбо</small></div>
     </section>
 
-    <!-- Текст для печати. Спаны .ch генерирует JS; здесь пример состояний -->
-    <div class="typing" id="typing" tabindex="0" aria-label="Текст для печати">
-      <span class="ch ok">в</span><span class="ch ok">е</span><span class="ch bad">т</span><span class="ch cur">е</span><span class="ch">р</span><span class="ch"> </span><span class="ch">р</span><span class="ch">е</span><span class="ch">к</span><span class="ch">а</span><span class="ch"> </span><span class="ch">м</span><span class="ch">о</span><span class="ch">с</span><span class="ch">т</span><span class="ch"> </span><span class="ch">о</span><span class="ch">к</span><span class="ch">н</span><span class="ch">о</span>
+    <p id="game-status" role="status" aria-live="polite">Загрузка…</p>
+    <!-- Небольшие постоянные элементы вместо частиц и тяжёлого слоя эффектов. -->
+    <div class="session-feedback">
+      <span id="streak-hint">10 подряд — множитель ×2</span>
+      <span id="game-feedback" role="status" aria-live="polite"></span>
+      <span id="session-count">0%</span>
     </div>
+    <div class="session-progress" role="progressbar" aria-label="Прогресс упражнения" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+      <div id="session-fill"></div>
+    </div>
+    <!-- Символы упражнения и их состояния создаёт game.js. -->
+    <div class="typing" id="typing" tabindex="0" aria-label="Текст для печати"></div>
 
     <!-- Подсказка по пальцу -->
     <div class="hint" aria-live="polite">
@@ -66,7 +73,7 @@
     <!-- Клавиатура: .fN – палец, .is-next – подсветка следующей клавиши -->
     <div class="kb" id="keyboard" aria-hidden="true">
       <div class="kb__row">
-        <kbd class="k f1">`</kbd>
+        <kbd class="k f1" data-key="`">`<span class="ru">ё</span></kbd>
         <kbd class="k f1">1</kbd><kbd class="k f2">2</kbd><kbd class="k f3">3</kbd><kbd class="k f4">4</kbd><kbd class="k f4">5</kbd>
         <kbd class="k f5">6</kbd><kbd class="k f5">7</kbd><kbd class="k f6">8</kbd><kbd class="k f7">9</kbd><kbd class="k f8">0</kbd>
         <kbd class="k f8">-</kbd><kbd class="k f8">=</kbd>
@@ -125,12 +132,11 @@
     <div class="actions">
       <button class="btn" type="button" id="restart">Заново</button>
       <button class="btn btn--ghost" type="button" id="pause">Пауза</button>
-      <a class="btn btn--ghost" href="profile.html">Профиль</a>
+      <a class="btn btn--ghost" href="/profile">Профиль</a>
     </div>
   </main>
 
-  <!-- Показывать, убирая атрибут hidden, когда выпал бонус -->
-  <div class="toast" id="bonus" role="status" hidden>Бонус: двойной опыт на 10 секунд</div>
-  <script src="./static/js/auth.js"></script>
+  <script src="/static/js/auth.js"></script>
+  <script src="/static/js/game.js"></script>
 </body>
 </html>

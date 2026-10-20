@@ -1,6 +1,8 @@
-import json, random
+import json
+import random
+from pathlib import Path
 
-with open("data.json", "r", encoding="utf-8") as f:
+with (Path(__file__).resolve().parent / "data.json").open(encoding="utf-8") as f:
     DATA = json.load(f)
 
 LEVELS = [
@@ -13,19 +15,23 @@ LEVELS = [
 
 ACHIEVES = [
     {"id": 1, "title": "Первый шаг", "description": "Завершить первую тренировку"},
-    {"id": 2, "title": "Печатный гений", "description": "Набрать скорость 300 слов/мин"},
-    {"id": 3, "title": "Стальной палец", "description": "1000 правильных нажатий подряд"},
+    {"id": 2, "title": "Снайпер", "description": "Пройти упражнение со 100% точностью"},
+    {"id": 3, "title": "Печатный гений", "description": "Набрать скорость 300 слов/мин"},
+    {"id": 4, "title": "Ветеран кода", "description": "Завершить 50 тренировок с кодом"},
+    {"id": 5, "title": "Стальной палец", "description": "1000 правильных нажатий подряд"},
 ]
 
 
 def gen_text(mode="words", lang="ru", dif=1):
     """Генерация текста из данных."""
+    if lang not in ("ru", "en") or not 1 <= dif <= 10:
+        raise ValueError("Язык должен быть ru/en, сложность — от 1 до 10")
     match mode:
         case "words":
             words = DATA["words"][lang]
             count = 15 * dif
             text = " ".join(random.sample(words, count))
-        case "text":
+        case "text" | "sentences":
             sents = DATA["sentences"][lang]
             text = " ".join(random.sample(sents, dif))
         case "code":
@@ -63,15 +69,19 @@ def calc_level(total_xp):
     return current_level
 
 
-def check_achieves(wpm, streak, is_first_session=False):
-    """Получение новых ачивок"""
+def check_achieves(wpm, accuracy, streak, total_lessons, code_lessons=0):
+    """Условия и ID совпадают с каталогом достижений в SQLite."""
     unlocked = []
-    if is_first_session:
+    if total_lessons >= 1:
         unlocked.append(ACHIEVES[0])
-    if wpm >= 300:
+    if accuracy == 100:
         unlocked.append(ACHIEVES[1])
-    if streak >= 1000:
+    if wpm >= 300:
         unlocked.append(ACHIEVES[2])
+    if code_lessons >= 50:
+        unlocked.append(ACHIEVES[3])
+    if streak >= 1000:
+        unlocked.append(ACHIEVES[4])
     return unlocked
 
 def get_top_mistakes(mistakes_dict, top_n=5):
@@ -91,7 +101,7 @@ def analyze_hist_errors(hist_list):
         if isinstance(errs, str):
             try:
                 errors = json.loads(errs)
-            except:
+            except (json.JSONDecodeError, TypeError):
                 errors = {}
         else:
             errors = errs
