@@ -5,6 +5,8 @@
   const typing = document.getElementById("typing");
   const restart = document.getElementById("restart");
   const pause = document.getElementById("pause");
+  const mobileInput = document.getElementById("mobile-input");
+  let usesMobileInput = false;
   const comboBadge = document.getElementById("combo");
   const feedback = document.getElementById("game-feedback");
   const streakHint = document.getElementById("streak-hint");
@@ -129,6 +131,7 @@
     text = "";
     started = elapsedBefore = attempts = correct = combo = maxCombo = 0;
     typed = []; mistakes = {}; paused = finished = false; pendingResult = null;
+    mobileInput.value = "";
     pause.textContent = "Пауза"; pause.disabled = true;
     restart.textContent = "Заново";
     typing.textContent = "Загрузка…"; status.textContent = ""; hud();
@@ -165,10 +168,10 @@
       document.querySelectorAll("#modes button, #langs button").forEach(el => { el.disabled = false; });
     }
   }
-  typing.addEventListener("keydown", event => {
+  function handleTypingKey(event) {
     if (loading || paused || finished || !text || event.ctrlKey || event.metaKey || event.altKey) return;
     if (event.key === "Backspace") {
-      event.preventDefault(); typed.pop(); combo = 0; render(); hud(); return;
+      event.preventDefault(); typed.pop(); mobileInput.value = typed.join(""); combo = 0; render(); hud(); return;
     }
     const key = event.key === "Enter" ? "\n" : event.key;
     if (key.length !== 1) return;
@@ -180,6 +183,7 @@
     if (key === expected) { correct++; combo++; maxCombo = Math.max(maxCombo, combo); }
     else { mistakes[expected] = (mistakes[expected] || 0) + 1; combo = 0; }
     typed.push(key); render(); hud();
+    mobileInput.value = typed.join("");
     if (key === expected) {
       animateOnce(characters[typed.length - 1], [{ opacity: .35 }, { opacity: 1 }], 150);
       if (pressedKey) animateOnce(pressedKey.node, [{ transform: "translateY(2px)", opacity: .65 }, { transform: "none", opacity: 1 }], 130);
@@ -198,6 +202,23 @@
       pendingResult = { ...metrics(), max_combo: maxCombo, errors_json: mistakes, mode: selected("modes", "mode"), duration_seconds: elapsedBefore };
       save();
     }
+  }
+  typing.addEventListener("keydown", handleTypingKey);
+  mobileInput.addEventListener("focus", () => { usesMobileInput = true; });
+  // input работает и с экранной клавиатурой, где keydown часто возвращает Unidentified.
+  mobileInput.addEventListener("input", event => {
+    if (event.isComposing) return;
+    const incoming = mobileInput.value;
+    if (loading || paused || finished) { mobileInput.value = typed.join(""); return; }
+    let common = 0;
+    while (common < typed.length && common < incoming.length && typed[common] === incoming[common]) common++;
+    while (typed.length > common) handleTypingKey({ key: "Backspace", preventDefault() {} });
+    for (const key of incoming.slice(common)) handleTypingKey({ key: key === "\n" ? "Enter" : key, preventDefault() {} });
+    mobileInput.value = typed.join("");
+  });
+  mobileInput.addEventListener("compositionend", () => mobileInput.dispatchEvent(new Event("input")));
+  typing.addEventListener("click", () => {
+    if (window.matchMedia("(pointer: coarse)").matches) mobileInput.focus();
   });
   pause.onclick = () => {
     if (loading || finished) return;
@@ -206,7 +227,7 @@
     paused = !paused; pause.textContent = paused ? "Продолжить" : "Пауза";
     typing.classList.toggle("is-paused", paused);
     status.textContent = paused ? "Тренировка приостановлена" : "Продолжайте печатать";
-    if (!paused) typing.focus();
+    if (!paused) (usesMobileInput ? mobileInput : typing).focus();
   };
   restart.onclick = () => pendingResult ? save() : load();
   for (const [group, attr] of [["modes", "mode"], ["langs", "lang"]]) {

@@ -8,32 +8,41 @@
     const ctx = canvas.getContext("2d");
     const width = canvas.parentElement.clientWidth || 600;
     const height = 220;
+    const compact = width < 520;
+    const bottom = compact ? 44 : 25;
     const ratio = window.devicePixelRatio || 1;
     canvas.width = width * ratio; canvas.height = height * ratio;
     canvas.style.width = width + "px"; canvas.style.height = height + "px";
     ctx.scale(ratio, ratio);
     ctx.font = "12px sans-serif";
     ctx.fillStyle = "#efeaff";
-    if (!history.length) { ctx.fillText("График появится после первой тренировки", 12, 40); return; }
+    if (!history.length) {
+      ctx.fillText("Завершите первую тренировку,", 12, 40);
+      ctx.fillText("чтобы увидеть график", 12, 58);
+      return;
+    }
     const entries = [...history].reverse();
     const maxSpeed = Math.max(100, ...entries.map(item => item.speed));
-    ctx.fillText("Скорость (бирюзовый) / точность, % (розовый)", 12, 20);
+    ctx.fillText(compact ? "Скорость / точность, %" : "Скорость (бирюзовый) / точность, % (розовый)", 12, 20);
     for (const [field, color, max] of [["speed", "#5eead4", maxSpeed], ["accuracy", "#ff6b9a", 100]]) {
       ctx.strokeStyle = color; ctx.fillStyle = color; ctx.lineWidth = 2; ctx.beginPath();
       entries.forEach((entry, i) => {
         const x = 20 + i * (width - 40) / Math.max(entries.length - 1, 1);
-        const y = height - 25 - entry[field] / max * (height - 65);
+        const y = height - bottom - entry[field] / max * (height - bottom - 40);
         if (i) ctx.lineTo(x, y); else ctx.moveTo(x, y);
       });
       ctx.stroke();
       entries.forEach((entry, i) => {
         ctx.beginPath();
-        ctx.arc(20 + i * (width - 40) / Math.max(entries.length - 1, 1), height - 25 - entry[field] / max * (height - 65), 3, 0, Math.PI * 2);
+        ctx.arc(20 + i * (width - 40) / Math.max(entries.length - 1, 1), height - bottom - entry[field] / max * (height - bottom - 40), 3, 0, Math.PI * 2);
         ctx.fill();
       });
     }
     ctx.fillStyle = "#efeaff";
-    ctx.fillText(`Максимум шкалы скорости: ${maxSpeed} слов/мин. Точность: 0–100%.`, 12, height - 4);
+    if (compact) {
+      ctx.fillText(`Скорость: 0–${maxSpeed} слов/мин`, 12, height - 20);
+      ctx.fillText("Точность: 0–100%", 12, height - 4);
+    } else ctx.fillText(`Максимум шкалы скорости: ${maxSpeed} слов/мин. Точность: 0–100%.`, 12, height - 4);
     canvas.setAttribute("aria-label", entries.map(item => `${item.speed} слов/мин, точность ${item.accuracy}%`).join("; "));
   }
   try {
