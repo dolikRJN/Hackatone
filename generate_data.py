@@ -1,4 +1,4 @@
-import json, ollama, time
+import json, ollama
 
 def request_to_LLM(prompt):
     """Отправка запроса на генерацию данных через локальную LLM"""
